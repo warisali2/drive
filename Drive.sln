@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive", "Drive\Drive.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive.Entities", "Drive.Entities\Drive.Entities.csproj", "{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive.DAL", "Drive.DAL\Drive.DAL.csproj", "{35102165-11BB-485B-8632-E073ACD48628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35102165-11BB-485B-8632-E073ACD48628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35102165-11BB-485B-8632-E073ACD48628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35102165-11BB-485B-8632-E073ACD48628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35102165-11BB-485B-8632-E073ACD48628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
