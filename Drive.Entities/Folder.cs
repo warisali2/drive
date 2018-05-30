@@ -13,5 +13,6 @@ namespace Drive.Entities
         public int ParentFolderId { get; set; }
         public DateTime CreatedOn { get; set; }
         public Boolean IsActive { get; set; }
+        public int CreatedBy { get; set; }
     }
 }
