@@ -22,7 +22,19 @@ namespace Drive.DAL
 
         public List<File> GetAll()
         {
-            throw new NotImplementedException();
+            var command = _context.CreateCommand();
+            command.CommandText = @"SELECT * FROM dbo.Files WHERE IsActive = 1;";
+
+            var reader = _context.ExecuteReader(command);
+            List<File> list = new List<File>();
+
+            while (reader.Read())
+            {
+                var file = Map(reader);
+                list.Add(file);
+            }
+
+            return list;
         }
 
         public File GetById(int id)
