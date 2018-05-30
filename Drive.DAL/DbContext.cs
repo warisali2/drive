@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Drive.DAL
 {
-    internal class DbContext : IDisposable
+    public class DbContext : IDisposable
     {
         String _conString = ConfigurationManager.ConnectionStrings["SQL_SERVER_CON_STRING"].ConnectionString;
         SqlConnection _connection = null;
