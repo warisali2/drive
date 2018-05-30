@@ -12,12 +12,12 @@ namespace Drive.DAL
     {
         public int Delete(int id)
         {
-                var command = _context.CreateCommand();
-                command.CommandText = @"UPDATE dbo.File SET IsActive=0 WHERE Id=@Id";
+            var command = _context.CreateCommand();
+            command.CommandText = @"UPDATE dbo.File SET IsActive=0 WHERE Id=@Id";
 
-                command.AddParameter("@Id", id);
+            command.AddParameter("@Id", id);
 
-                return _context.ExecuteQuery(command);
+            return _context.ExecuteQuery(command);
         }
 
         public List<File> GetAll()
@@ -37,7 +37,18 @@ namespace Drive.DAL
 
         public File Map(SqlDataReader reader)
         {
-            throw new NotImplementedException();
+            File file = new File();
+
+            file.Id = (int)reader["Id"];
+            file.Name = (String)reader["Name"];
+            file.ParenFolderId = (int)reader["ParentFolderId"];
+            file.FileExt = (String)reader["FileExt"];
+            file.FileSizeInKB = (int)reader["FileSizeInKB"];
+            file.CreatedBy = (int)reader["CreatedBy"];
+            file.UploadedOn = (DateTime)reader["UploadedOn"];
+            file.IsActive = (bool)reader["IsActive"];
+
+            return file;
         }
 
         public int Update(File obj)
