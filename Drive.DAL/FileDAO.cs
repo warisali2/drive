@@ -39,7 +39,17 @@ namespace Drive.DAL
 
         public File GetById(int id)
         {
-            throw new NotImplementedException();
+            var command = _context.CreateCommand();
+
+            command.CommandText = @"SELECT * FROM dbo.Files WHERE Id = @Id";
+            command.AddParameter("@Id", id);
+
+            var reader = _context.ExecuteReader(command);
+
+            if (reader.Read())
+                return Map(reader);
+
+            return null;
         }
 
         public int Insert(File obj)
