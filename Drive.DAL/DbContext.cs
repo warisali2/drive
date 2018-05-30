@@ -19,7 +19,7 @@ namespace Drive.DAL
             _connection.Open();
         }
 
-        SqlCommand CreateCommand()
+        public SqlCommand CreateCommand()
         {
             return _connection.CreateCommand();
         }
