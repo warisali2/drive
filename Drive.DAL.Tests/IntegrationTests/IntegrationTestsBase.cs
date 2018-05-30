@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,15 @@ namespace Drive.DAL.Tests.IntegrationTests
         private DbContext CreateDbContext()
         {
             return new DbContext(_conStringName);
+        }
+
+        [SetUp]
+        public void CleanUp()
+        {
+            var command = _context.CreateCommand();
+            command.CommandText = "DELETE dbo.Files; DELETE dbo.Folder; DELETE dbo.Users";
+
+            _context.ExecuteQuery(command);
         }
 
     }
