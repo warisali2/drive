@@ -18,6 +18,29 @@ namespace Drive.DAL
             _connection = new SqlConnection(_conString);
             _connection.Open();
         }
+
+        SqlCommand CreateCommand()
+        {
+            return _connection.CreateCommand();
+        }
+
+        public int ExecuteQuery(SqlCommand command)
+        {
+            var count = command.ExecuteNonQuery();
+            return count;
+        }
+
+        public Object ExecuteScalar(SqlCommand command)
+        {
+            return command.ExecuteScalar();
+        }
+
+        public SqlDataReader ExecuteReader(SqlCommand command)
+        {
+            return command.ExecuteReader();
+        }
+
+
         public void Dispose()
         {
             if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
