@@ -15,5 +15,6 @@ namespace Drive.Entities
         public int FileSizeInKB { get; set; }
         public DateTime UploadedOn { get; set; }
         public Boolean IsActive { get; set; }
+        public int CreatedBy { get; set; }
     }
 }
