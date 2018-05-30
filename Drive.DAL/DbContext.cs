@@ -19,6 +19,13 @@ namespace Drive.DAL
             _connection.Open();
         }
 
+        public DbContext(String key)
+        {
+            _conString = ConfigurationManager.ConnectionStrings[key].ConnectionString;
+            _connection = new SqlConnection(_conString);
+            _connection.Open();
+        }
+
         public SqlCommand CreateCommand()
         {
             return _connection.CreateCommand();
