@@ -57,8 +57,6 @@ namespace Drive.DAL
             var command = _context.CreateCommand();
             command.CommandText = @"INSERT INTO dbo.Files(Name, ParentFolderId, FileExt, FileSizeInKB, CreatedBy, UploadedOn, IsActive) VALUES(@Name, @ParentFolderId, @FileExt, @FileSizeInKB, @CreatedBy, @UploadedOn, @IsActive);";
 
-
-
             command.AddParameter("@Name", file.Name);
             command.AddParameter("@ParentFolderId", file.ParenFolderId);
             command.AddParameter("@FileExt", file.FileExt);
@@ -86,9 +84,17 @@ namespace Drive.DAL
             return file;
         }
 
-        public int Update(File obj)
+        public int Update(File file)
         {
-            throw new NotImplementedException();
+            var command = _context.CreateCommand();
+            command.CommandText = @"UPDATE dbo.Files SET Name=@Name, ParentFolderId=@ParentFolderId, IsActive=@ WHERE Id=@Id";
+
+            command.AddParameter("@Name", file.Name);
+            command.AddParameter("@ParentFolderId", file.ParenFolderId);
+            command.AddParameter("@IsActive", file.IsActive);
+            command.AddParameter("@Id", file.Id);
+
+            return _context.ExecuteQuery(command);
         }
     }
 }
