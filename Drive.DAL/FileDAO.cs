@@ -8,19 +8,16 @@ using System.Data.SqlClient;
 
 namespace Drive.DAL
 {
-    public class FileDAO : IDAO<File>
+    public class FileDAO : BaseDAO, IDAO<File>
     {
         public int Delete(int id)
         {
-            using (DbContext context = new DbContext())
-            {
-                var command = context.CreateCommand();
+                var command = _context.CreateCommand();
                 command.CommandText = @"UPDATE dbo.File SET IsActive=0 WHERE Id=@Id";
 
                 command.AddParameter("@Id", id);
 
-                return context.ExecuteQuery(command);
-            }
+                return _context.ExecuteQuery(command);
         }
 
         public List<File> GetAll()
