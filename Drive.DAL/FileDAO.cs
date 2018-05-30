@@ -52,9 +52,22 @@ namespace Drive.DAL
             return null;
         }
 
-        public int Insert(File obj)
+        public int Insert(File file)
         {
-            throw new NotImplementedException();
+            var command = _context.CreateCommand();
+            command.CommandText = @"INSERT INTO dbo.Files(Name, ParentFolderId, FileExt, FileSizeInKB, CreatedBy, UploadedOn, IsActive) VALUES(@Name, @ParentFolderId, @FileExt, @FileSizeInKB, @CreatedBy, @UploadedOn, @IsActive);";
+
+
+
+            command.AddParameter("@Name", file.Name);
+            command.AddParameter("@ParentFolderId", file.ParenFolderId);
+            command.AddParameter("@FileExt", file.FileExt);
+            command.AddParameter("@FileSizeInKB", file.FileSizeInKB);
+            command.AddParameter("@CreatedBy", file.CreatedBy);
+            command.AddParameter("@UploadedOn", file.UploadedOn);
+            command.AddParameter("@IsActive", file.IsActive);
+
+            return _context.ExecuteQuery(command);
         }
 
         public File Map(SqlDataReader reader)
