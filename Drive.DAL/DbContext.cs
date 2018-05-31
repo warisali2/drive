@@ -10,12 +10,13 @@ namespace Drive.DAL
 {
     public class DbContext : IDisposable
     {
-        String _conKey = "SQL_SERVER_CON_STRING";
+        String _conKey = null;
         String _conString = null;
         SqlConnection _connection = null;
 
         public DbContext()
         {
+            _conKey = "SQL_SERVER_CON_STRING";
             _conString = ConfigurationManager.ConnectionStrings[_conKey].ConnectionString ?? null;
 
             if (_conString == null)
@@ -27,6 +28,7 @@ namespace Drive.DAL
 
         public DbContext(String key)
         {
+            _conKey = key;
             _conString = ConfigurationManager.ConnectionStrings[key].ConnectionString ?? null;
 
             if (_conString == null)
