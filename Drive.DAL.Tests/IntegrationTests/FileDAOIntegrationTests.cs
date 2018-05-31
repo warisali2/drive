@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Drive.Entities;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,16 @@ namespace Drive.DAL.Tests.IntegrationTests
     [TestFixture]
     public class FileDAOIntegrationTests : IntegrationTestsBase
     {
-        [Test]
-        public void GetAll__WithNoRows__ReturnsListOfZero()
+        FileDAO dao = null;
+
+        public FileDAOIntegrationTests() : base()
         {
-            FileDAO dao = new FileDAO();
+            dao = new FileDAO(_conStringName);
+        }
 
-            var list = dao.GetAll();
-
-            Assert.AreEqual(list.Count, 0);
+        public FileDAOIntegrationTests(String key) : base(key)
+        {
+            dao = new FileDAO(key);
         }
     }
 }
