@@ -29,6 +29,7 @@ namespace Drive.DAL.Tests.IntegrationTests
         }
 
         [SetUp]
+        [TearDown]
         public void CleanUp()
         {
             var command = _context.CreateCommand();
