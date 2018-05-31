@@ -9,7 +9,7 @@ namespace Drive.DAL.Tests.IntegrationTests
 {
     public class IntegrationTestsBase
     {
-        String _conStringName = "SQL_SERVER_TEST_DB_CON_STRING";
+        protected String _conStringName = "SQL_SERVER_TEST_DB_CON_STRING";
         DbContext _context = null;
 
         public IntegrationTestsBase()
