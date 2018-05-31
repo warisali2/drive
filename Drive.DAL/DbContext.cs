@@ -10,18 +10,28 @@ namespace Drive.DAL
 {
     public class DbContext : IDisposable
     {
-        String _conString = ConfigurationManager.ConnectionStrings["SQL_SERVER_CON_STRING"].ConnectionString;
+        String _conKey = "SQL_SERVER_CON_STRING";
+        String _conString = null;
         SqlConnection _connection = null;
 
         public DbContext()
         {
+            _conString = ConfigurationManager.ConnectionStrings[_conKey].ConnectionString ?? null;
+
+            if (_conString == null)
+                throw new ConfigurationErrorsException("Connection String is null");
+
             _connection = new SqlConnection(_conString);
             _connection.Open();
         }
 
         public DbContext(String key)
         {
-            _conString = ConfigurationManager.ConnectionStrings[key].ConnectionString;
+            _conString = ConfigurationManager.ConnectionStrings[key].ConnectionString ?? null;
+
+            if (_conString == null)
+                throw new ConfigurationErrorsException("Connection String is null");
+
             _connection = new SqlConnection(_conString);
             _connection.Open();
         }
