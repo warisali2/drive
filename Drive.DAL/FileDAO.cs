@@ -10,6 +10,10 @@ namespace Drive.DAL
 {
     public class FileDAO : BaseDAO, IDAO<File>
     {
+
+        public FileDAO() : base() { }
+        public FileDAO(String key) : base(key) { }
+
         public int Delete(int id)
         {
             var command = _context.CreateCommand();
@@ -34,6 +38,7 @@ namespace Drive.DAL
                 list.Add(file);
             }
 
+            reader.Close();
             return list;
         }
 
@@ -55,7 +60,7 @@ namespace Drive.DAL
         public int Insert(File file)
         {
             var command = _context.CreateCommand();
-            command.CommandText = @"INSERT INTO dbo.Files(Name, ParentFolderId, FileExt, FileSizeInKB, CreatedBy, UploadedOn, IsActive) VALUES(@Name, @ParentFolderId, @FileExt, @FileSizeInKB, @CreatedBy, @UploadedOn, @IsActive);";
+            command.CommandText = @"INSERT INTO dbo.Files (Name, ParentFolderId, FileExt, FileSizeInKB, CreatedBy, UploadedOn, IsActive) OUTPUT INSERTED.Id VALUES(@Name, @ParentFolderId, @FileExt, @FileSizeInKB, @CreatedBy, @UploadedOn, @IsActive);";
 
             command.AddParameter("@Name", file.Name);
             command.AddParameter("@ParentFolderId", file.ParenFolderId);
@@ -65,7 +70,7 @@ namespace Drive.DAL
             command.AddParameter("@UploadedOn", file.UploadedOn);
             command.AddParameter("@IsActive", file.IsActive);
 
-            return _context.ExecuteQuery(command);
+            return (int)_context.ExecuteScalar(command);
         }
 
         public File Map(SqlDataReader reader)
