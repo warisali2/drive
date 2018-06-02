@@ -175,5 +175,51 @@ namespace Drive.DAL.Tests.IntegrationTests
 
             Assert.IsNull(file);
         }
+
+        [Test]
+        public void Update__WithCorrectData__UpdatesRecord()
+        {
+            File file = new File();
+            file.Name = "Test File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            file.Id = dao.Insert(file);
+
+            var dbFile = dao.GetById(file.Id);
+            dbFile.IsActive = false;
+
+            var count = dao.Update(dbFile);
+            var updatedFile = dao.GetById(dbFile.Id);
+
+            Assert.AreEqual(1, count);
+            Assert.AreEqual(false, updatedFile.IsActive);
+        }
+
+        [Test]
+        public void Update__WithIncorrectData__ReturnsNegOne()
+        {
+            File file = new File();
+            file.Name = "Test File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            file.Id = dao.Insert(file);
+
+            var dbFile = dao.GetById(file.Id);
+            dbFile.Name = null;
+
+            var count = dao.Update(dbFile);
+
+            Assert.AreEqual(-1, count);
+        }
     }
 }
