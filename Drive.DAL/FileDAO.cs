@@ -107,7 +107,12 @@ namespace Drive.DAL
             command.AddParameter("@IsActive", file.IsActive);
             command.AddParameter("@Id", file.Id);
 
-            return _context.ExecuteQuery(command);
+            try {
+                return _context.ExecuteQuery(command);
+            }catch(Exception)
+            {
+                return -1;
+            }
         }
     }
 }
