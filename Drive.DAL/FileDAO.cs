@@ -52,7 +52,11 @@ namespace Drive.DAL
             var reader = _context.ExecuteReader(command);
 
             if (reader.Read())
-                return Map(reader);
+            {
+                var file = Map(reader);
+                reader.Close();
+                return file;
+            }
 
             return null;
         }
@@ -107,9 +111,11 @@ namespace Drive.DAL
             command.AddParameter("@IsActive", file.IsActive);
             command.AddParameter("@Id", file.Id);
 
-            try {
+            try
+            {
                 return _context.ExecuteQuery(command);
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 return -1;
             }
