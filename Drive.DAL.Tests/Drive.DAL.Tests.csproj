@@ -61,6 +61,7 @@
     <Compile Include="IntegrationTests\FileDAOIntegrationTests.cs" />
     <Compile Include="IntegrationTests\FolderDAOIntegrationTests.cs" />
     <Compile Include="IntegrationTests\IntegrationTestsBase.cs" />
+    <Compile Include="IntegrationTests\UserDAOIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
