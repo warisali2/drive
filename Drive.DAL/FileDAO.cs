@@ -100,7 +100,7 @@ namespace Drive.DAL
         public int Update(File file)
         {
             var command = _context.CreateCommand();
-            command.CommandText = @"UPDATE dbo.Files SET Name=@Name, ParentFolderId=@ParentFolderId, IsActive=@ WHERE Id=@Id";
+            command.CommandText = @"UPDATE dbo.Files SET Name=@Name, ParentFolderId=@ParentFolderId, IsActive=@IsActive WHERE Id=@Id";
 
             command.AddParameter("@Name", file.Name);
             command.AddParameter("@ParentFolderId", file.ParenFolderId);
