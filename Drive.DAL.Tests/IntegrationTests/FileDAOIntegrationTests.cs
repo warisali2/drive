@@ -221,5 +221,35 @@ namespace Drive.DAL.Tests.IntegrationTests
 
             Assert.AreEqual(-1, count);
         }
+
+        [Test]
+        public void Delete__WithCorrectId__DeactivatesRecord()
+        {
+            File file = new File();
+            file.Name = "Test File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            file.Id = dao.Insert(file);
+
+
+            var count = dao.Delete(file.Id);
+            var updatedFile = dao.GetById(file.Id);
+
+            Assert.AreEqual(1, count);
+            Assert.AreEqual(false, updatedFile.IsActive);
+        }
+
+        [Test]
+        public void Delete__WithIncorrectId__ReturnsNegOne()
+        {
+            var count = dao.Delete(123);
+
+            Assert.AreEqual(-1, count);
+        }
     }
 }
