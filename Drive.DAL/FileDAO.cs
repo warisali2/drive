@@ -67,7 +67,7 @@ namespace Drive.DAL
             command.AddParameter("@FileExt", file.FileExt);
             command.AddParameter("@FileSizeInKB", file.FileSizeInKB);
             command.AddParameter("@CreatedBy", file.CreatedBy);
-            command.AddParameter("@UploadedOn", file.UploadedOn);
+            command.AddParameter("@UploadedOn", file.UploadedOn.Truncate(TimeSpan.FromSeconds(1)));
             command.AddParameter("@IsActive", file.IsActive);
 
             return (int)_context.ExecuteScalar(command);
