@@ -70,7 +70,15 @@ namespace Drive.DAL
             command.AddParameter("@UploadedOn", file.UploadedOn.Truncate(TimeSpan.FromSeconds(1)));
             command.AddParameter("@IsActive", file.IsActive);
 
-            return (int)_context.ExecuteScalar(command);
+            try
+            {
+                return (int)_context.ExecuteScalar(command);
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
         }
 
         public File Map(SqlDataReader reader)
