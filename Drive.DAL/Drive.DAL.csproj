@@ -49,6 +49,7 @@
     <Compile Include="IDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IDbCommandExtension.cs" />
+    <Compile Include="UserDAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Drive.Entities\Drive.Entities.csproj">
