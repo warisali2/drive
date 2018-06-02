@@ -51,7 +51,94 @@ namespace Drive.DAL.Tests.IntegrationTests
             Assert.AreEqual(1, list.Count);
         }
 
-        
+        [Test]
+        public void Insert__WithData__InsertsOneRow()
+        {
+            File file = new File();
+            file.Name = "Test File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now;
+
+            file.Id = dao.Insert(file);
+
+            var list = dao.GetAll();
+
+            Assert.AreEqual(1, list.Count);
+        }
+
+        [Test]
+        public void Insert__WithData__InsertsCorrectData()
+        {
+            File file = new File();
+            file.Name = "Test File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            file.Id = dao.Insert(file);
+
+            var list = dao.GetAll();
+            var dbFile = list[0];
+
+            Assert.AreEqual(dbFile.Id, file.Id);
+            Assert.AreEqual(dbFile.Name, file.Name);
+            Assert.AreEqual(dbFile.ParenFolderId, file.ParenFolderId);
+            Assert.AreEqual(dbFile.IsActive, file.IsActive);
+            Assert.AreEqual(dbFile.FileSizeInKB, file.FileSizeInKB);
+            Assert.AreEqual(dbFile.FileExt, file.FileExt);
+            Assert.AreEqual(dbFile.CreatedBy, file.CreatedBy);
+            Assert.AreEqual(dbFile.UploadedOn, file.UploadedOn);
+        }
+
+        [Test]
+        public void Insert__WithIncorrectData__ReturnsNegOne()
+        {
+            File file = new File();
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now;
+
+            file.Id = dao.Insert(file);
+
+            Assert.AreEqual(-1, file.Id);
+        }
+
+        [Test]
+        public void Insert__WithCorrectData__ReturnsReturnsIdOfInsertedRecord()
+        {
+            File file = new File();
+            file.Name = "Text File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            file.Id = dao.Insert(file);
+
+            var dbFile = dao.GetById(file.Id);
+
+            Assert.AreEqual(dbFile.Id, file.Id);
+            Assert.AreEqual(dbFile.Name, file.Name);
+            Assert.AreEqual(dbFile.ParenFolderId, file.ParenFolderId);
+            Assert.AreEqual(dbFile.IsActive, file.IsActive);
+            Assert.AreEqual(dbFile.FileSizeInKB, file.FileSizeInKB);
+            Assert.AreEqual(dbFile.FileExt, file.FileExt);
+            Assert.AreEqual(dbFile.CreatedBy, file.CreatedBy);
+            Assert.AreEqual(dbFile.UploadedOn, file.UploadedOn);
+        }
+
 
     }
 }
