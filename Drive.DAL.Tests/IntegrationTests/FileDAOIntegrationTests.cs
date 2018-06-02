@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Drive.DAL.Tests.IntegrationTests
 {
     [TestFixture]
+    [Category("IntegrationTests")]
     public class FileDAOIntegrationTests : IntegrationTestsBase
     {
         FileDAO dao = null;
