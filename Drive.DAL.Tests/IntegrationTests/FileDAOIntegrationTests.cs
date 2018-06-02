@@ -245,11 +245,11 @@ namespace Drive.DAL.Tests.IntegrationTests
         }
 
         [Test]
-        public void Delete__WithIncorrectId__ReturnsNegOne()
+        public void Delete__WithIncorrectId__ReturnsZero()
         {
-            var count = dao.Delete(123);
+            var count = dao.Delete(-123);
 
-            Assert.AreEqual(-1, count);
+            Assert.AreEqual(0, count);
         }
     }
 }
