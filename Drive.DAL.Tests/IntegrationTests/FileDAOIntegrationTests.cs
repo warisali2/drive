@@ -140,5 +140,39 @@ namespace Drive.DAL.Tests.IntegrationTests
         }
 
 
+
+        [Test]
+        public void GetById__WithId__ReturnsResult()
+        {
+            File file = new File();
+            file.Name = "Test File";
+            file.ParenFolderId = -1;
+            file.IsActive = true;
+            file.FileExt = ".txt";
+            file.FileSizeInKB = 100;
+            file.CreatedBy = 1;
+            file.UploadedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            file.Id = dao.Insert(file);
+
+            var dbFile = dao.GetById(file.Id);
+
+            Assert.AreEqual(dbFile.Id, file.Id);
+            Assert.AreEqual(dbFile.Name, file.Name);
+            Assert.AreEqual(dbFile.ParenFolderId, file.ParenFolderId);
+            Assert.AreEqual(dbFile.IsActive, file.IsActive);
+            Assert.AreEqual(dbFile.FileSizeInKB, file.FileSizeInKB);
+            Assert.AreEqual(dbFile.FileExt, file.FileExt);
+            Assert.AreEqual(dbFile.CreatedBy, file.CreatedBy);
+            Assert.AreEqual(dbFile.UploadedOn, file.UploadedOn);
+        }
+
+        [Test]
+        public void GetById__WithIncorrectId__ReturnsNull()
+        {
+            var file = dao.GetById(2);
+
+            Assert.IsNull(file);
+        }
     }
 }
