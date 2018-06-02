@@ -21,7 +21,14 @@ namespace Drive.DAL
 
             command.AddParameter("@Id", id);
 
-            return _context.ExecuteQuery(command);
+            try
+            {
+                return _context.ExecuteQuery(command);
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
         public List<File> GetAll()
