@@ -17,7 +17,7 @@ namespace Drive.DAL
         public int Delete(int id)
         {
             var command = _context.CreateCommand();
-            command.CommandText = @"UPDATE dbo.File SET IsActive=0 WHERE Id=@Id";
+            command.CommandText = @"UPDATE dbo.Files SET IsActive=0 WHERE Id=@Id";
 
             command.AddParameter("@Id", id);
 
