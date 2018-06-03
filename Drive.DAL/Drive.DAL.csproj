@@ -41,15 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseDAO.cs" />
-    <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="DbContext.cs" />
-    <Compile Include="FileDAO.cs" />
-    <Compile Include="FolderDAO.cs" />
-    <Compile Include="IDAO.cs" />
+    <Compile Include="DAO\BaseDAO.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="DAO\DbContext.cs" />
+    <Compile Include="DAO\FileDAO.cs" />
+    <Compile Include="DAO\FolderDAO.cs" />
+    <Compile Include="DAO\IDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IDbCommandExtension.cs" />
-    <Compile Include="UserDAO.cs" />
+    <Compile Include="Extensions\IDbCommandExtension.cs" />
+    <Compile Include="DAO\UserDAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Drive.Entities\Drive.Entities.csproj">
