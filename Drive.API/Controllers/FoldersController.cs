@@ -18,7 +18,7 @@ namespace Drive.API.Controllers
             var folders = folderDAO.GetAll();
             var activeAndRootFolders = (from folder in folders
                                         where folder.IsActive == true && folder.ParentFolderId == -1 && folder.CreatedBy == id
-                                        select folder) as List<Folder>;
+                                        select folder).ToList<Folder>();
 
             return activeAndRootFolders;
         }

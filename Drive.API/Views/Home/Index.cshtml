@@ -10,7 +10,10 @@
 
 <h4>Folders</h4>
 
-@{
+<div id="folders">
+
+</div>
+@*@{
     if (ViewBag.folders != null)
     {
         foreach (var folder in ViewBag.folders)
@@ -27,7 +30,7 @@
         <span style="color: red">NO FOLDERS</span><br />
     }
 
-}
+}*@
 
 <h4>Files</h4>
 
@@ -52,6 +55,12 @@
 }
 
 @section scripts {
+    <script>
+        $(document).ready(function () {
+            get_folders_from_server();
+        });
+    </script>
+
     @Scripts.Render("~/bundles/uglipop")
 
     <script>
