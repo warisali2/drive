@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive", "Drive\Drive.csproj", "{4A8E05B0-0907-407C-A6D7-E6FDD795B2CF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive.Entities", "Drive.Entities\Drive.Entities.csproj", "{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive.DAL", "Drive.DAL\Drive.DAL.csproj", "{35102165-11BB-485B-8632-E073ACD48628}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive.DAL.Tests", "Drive.DAL.Tests\Drive.DAL.Tests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive.API", "Drive.API\Drive.API.csproj", "{55417F5C-C583-42C2-A41E-AE35EED0BF13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drive", "Drive.API\Drive.csproj", "{55417F5C-C583-42C2-A41E-AE35EED0BF13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4A8E05B0-0907-407C-A6D7-E6FDD795B2CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A8E05B0-0907-407C-A6D7-E6FDD795B2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A8E05B0-0907-407C-A6D7-E6FDD795B2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A8E05B0-0907-407C-A6D7-E6FDD795B2CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{514169AC-060F-4BCA-A44C-ED6A77ECF7C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
