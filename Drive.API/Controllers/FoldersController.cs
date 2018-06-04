@@ -11,13 +11,13 @@ namespace Drive.API.Controllers
 {
     public class FoldersController : ApiController
     {
-        public List<Folder> GetAllOfUser(int id)
+        public List<Folder> GetAll(int userId, int parentFolderId = -1)
         {
             FolderDAO folderDAO = new FolderDAO();
 
             var folders = folderDAO.GetAll();
             var activeAndRootFolders = (from folder in folders
-                                        where folder.IsActive == true && folder.ParentFolderId == -1 && folder.CreatedBy == id
+                                        where folder.IsActive == true && folder.ParentFolderId == parentFolderId && folder.CreatedBy == userId
                                         select folder).ToList<Folder>();
 
             return activeAndRootFolders;
