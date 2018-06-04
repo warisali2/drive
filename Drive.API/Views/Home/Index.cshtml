@@ -14,23 +14,23 @@
 
 </div>
 @*@{
-    if (ViewBag.folders != null)
-    {
-        foreach (var folder in ViewBag.folders)
+        if (ViewBag.folders != null)
         {
-            <div style="border: 5px solid black; clear: both">
-                ID: @folder.Id <br />
-                Name: @folder.Name <br />
-                CreatedOn: @folder.CreatedOn <br />
-            </div>
+            foreach (var folder in ViewBag.folders)
+            {
+                <div style="border: 5px solid black; clear: both">
+                    ID: @folder.Id <br />
+                    Name: @folder.Name <br />
+                    CreatedOn: @folder.CreatedOn <br />
+                </div>
+            }
         }
-    }
-    else
-    {
-        <span style="color: red">NO FOLDERS</span><br />
-    }
+        else
+        {
+            <span style="color: red">NO FOLDERS</span><br />
+        }
 
-}*@
+    }*@
 
 <h4>Files</h4>
 
@@ -55,36 +55,29 @@
 }
 
 @section scripts {
-    <script>
-        $(document).ready(function () {
-            get_folders_from_server();
-        });
-    </script>
-
     @Scripts.Render("~/bundles/uglipop")
 
     <script>
-        var prompt_new_folder = function () {
+
+        //Load folders on page load
+        $(document).ready(function () {
+            Folder.getFoldersFromServer();
+        });
+
+        //prompt to add new folder
+        var promptNewFolder = function () {
             uglipop({ class: 'prompt', source: 'div', content: 'add-new-folder-popup' });
         }
 
-        $("button[name=new-folder]").click(function () { prompt_new_folder(); });
+        $("button[name=new-folder]").click(function () { promptNewFolder(); });
+
     </script>
 
     <div id="add-new-folder-popup" style="display:none;">
-        <form>
-            <h5>New Folder</h5>
-            Name: <input type="text" id="new-folder-name" />
-            <button onclick="add_new_folder();">Add New Folder</button>
-            <button onclick="remove();">Cancel</button>
-        </form>
+        <h5>New Folder</h5>
+        Name: <input type="text" id="new-folder-name" required autofocus />
+        <button onclick="Folder.addNewFolder();">Add</button>
+        <button onclick="remove();">Cancel</button>
     </div>
-
-    <script>
-        var add_new_folder = function () {
-            var name = $(".prompt input[id=new-folder-name]").val();
-            alert("Name: " + name);
-        };
-    </script>
 }
 
