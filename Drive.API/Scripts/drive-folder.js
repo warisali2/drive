@@ -59,6 +59,7 @@ Folder.saveFolder = function (name, parentFolderId) {
     settings.data = { name: name, userId: userId, parentFolderId: parentFolderId };
     settings.success = function () {
         Folder.getFoldersFromServer();
+        return true;
     };
 
     settings.error = function (e) {
@@ -68,3 +69,13 @@ Folder.saveFolder = function (name, parentFolderId) {
 
     $.ajax(settings);
 }
+
+Folder.addNewFolder = function () {
+    var name = $(".prompt input[id=new-folder-name]").val();
+
+    if (name == null || name == "") return false;
+
+    Folder.saveFolder(name);
+
+    remove();
+};
