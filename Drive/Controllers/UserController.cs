@@ -36,5 +36,11 @@ namespace Drive.Controllers
             ViewBag.errorMessage = "Incorrect Login or Password";
             return View();
         }
+
+        public ActionResult Logout()
+        {
+            SessionManager.ClearSession();
+            return View("Login");
+        }
     }
 }
