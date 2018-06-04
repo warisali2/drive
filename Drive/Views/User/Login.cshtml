@@ -3,5 +3,16 @@
     ViewBag.Title = "Login";
 }
 
-<h2>View</h2>
+<h2>Login</h2>
 
+@if(ViewBag.errorMessage != null)
+{
+    <span style="color: red">@ViewBag.errorMessage</span>
+}
+
+@using (Html.BeginForm("Login", "User", FormMethod.Post))
+{
+    <b>Login: </b><input type="text" name="Login" />
+    <b>Password: </b><input type="password" name="Password" />
+    <button type="submit">Login</button>
+}
