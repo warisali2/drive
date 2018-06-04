@@ -1,4 +1,5 @@
 ﻿using Drive.DAL;
+using Drive.DAL.Extensions;
 using Drive.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,19 @@ namespace Drive.API.Controllers
 
             return activeAndRootFolders;
         }
+
+        [HttpGet]
+        public void Save(string name, int userId, int parentFolderId = -1)
+        {
+            Folder folder = new Folder();
+            folder.Name = name;
+            folder.CreatedBy = userId;
+            folder.ParentFolderId = parentFolderId;
+            folder.IsActive = true;
+            folder.CreatedOn = DateTime.Now.Truncate(TimeSpan.FromSeconds(1));
+
+            folder.Save();
+        }
+
     }
 }
