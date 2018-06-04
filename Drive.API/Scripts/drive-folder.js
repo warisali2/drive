@@ -25,8 +25,10 @@ Folder.getFoldersFromServer = function (parentFolderId) {
 
 //Places folders from folders variable in the specified container
 Folder.loadFolders = function () {
-
+    
     var container = Folder.container;
+
+    container.empty();
 
     if (Folder.folders == null) {
         container.append($("<span>").text("NO FOLDERS").css("color", "red"));
