@@ -71,6 +71,12 @@
 
         $("button[name=new-folder]").click(function () { promptNewFolder(); });
 
+        //Register click event to go to a folder
+        $(document).on("dblclick", ".folder", function () {
+            currentFolderId = $(this).attr("folder-id");
+            Folder.getFoldersFromServer();
+        });
+
     </script>
 
     <div id="add-new-folder-popup" style="display:none;">

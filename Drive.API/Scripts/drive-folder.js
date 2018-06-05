@@ -5,7 +5,7 @@ Folder.container = $("#folders");
 
 //Makes ajax request to server and places them in folders variable
 Folder.getFoldersFromServer = function (parentFolderId) {
-
+    parentFolderId = currentFolderId;
     var settings = {};
 
     settings.url = "/api/folders/getall/";
@@ -37,7 +37,10 @@ Folder.loadFolders = function () {
         for(var i = 0; i < Folder.folders.length; i++){
             var folder = Folder.folders[i];
 
-            var div = $("<div>").css("border", "2px solid black").css("clear", "both");
+            if(folder.ParentFolderId != currentFolderId)
+                continue;
+
+            var div = $("<div>").css("border", "2px solid black").css("clear", "both").addClass("folder").attr("folder-id", folder.Id);
 
             var Id = $("<span>").text("Id:" + folder.Id).insertAfter($("<br>"));
             var Name = $("<span>").text("Name:" + folder.Name).insertAfter($("<br>"));
@@ -75,7 +78,7 @@ Folder.addNewFolder = function () {
 
     if (name == null || name == "") return false;
 
-    Folder.saveFolder(name);
-
+    Folder.saveFolder(name, currentFolderId);
+    Folder.getFoldersFromServer();
     remove();
 };
