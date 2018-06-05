@@ -18,25 +18,7 @@
 
 <h4>Files</h4>
 
-@{
-    if (ViewBag.files != null)
-    {
-        foreach (var file in ViewBag.files)
-        {
-            <div style="border: 5px solid black;">
-                ID: @file.Id <br />
-                Name: @file.Name <br />
-                UploadedOn: @file.UploadedOn <br />
-                Size: @file.FileSizeInKB <br />
-                Extension: @file.FileExt <br />
-            </div>
-        }
-    }
-    else
-    {
-        <span style="color: red">NO FILES</span><br />
-    }
-}
+<div id="files"></div>
 
 @section scripts {
     @Scripts.Render("~/bundles/uglipop")

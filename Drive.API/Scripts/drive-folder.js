@@ -14,6 +14,7 @@ Folder.getFoldersFromServer = function (parentFolderId) {
     settings.success = function (data) {
         Folder.folders = data;
         Folder.loadFolders();
+        File.getFilesFromServer();
     };
 
     settings.error = function () {

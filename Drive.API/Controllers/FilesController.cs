@@ -60,5 +60,17 @@ namespace Drive.API.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
+
+        public List<Entities.File> GetAll(int userId, int parentFolderId = -1)
+        {
+            FileDAO fileDAO = new FileDAO();
+
+            var files = fileDAO.GetAll();
+            var activeAndRootFiles = (from file in files
+                                        where file.IsActive == true && file.ParenFolderId == parentFolderId && file.CreatedBy == userId
+                                        select file).ToList<Entities.File>();
+
+            return activeAndRootFiles;
+        }
     }
 }
