@@ -31,7 +31,8 @@ namespace Drive.API.Controllers
 
                             Entities.File file = new Entities.File();
 
-                            file.Name = uniqueName + "-" + postedFile.FileName;
+                            //file.Name = uniqueName + "-" + postedFile.FileName;
+                            file.Name = postedFile.FileName;
                             file.FileExt = Path.GetExtension(postedFile.FileName);
                             file.IsActive = true;
                             file.FileSizeInKB = (postedFile.ContentLength) / 1024;
