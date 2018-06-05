@@ -53,7 +53,13 @@
             uglipop({ class: 'prompt', source: 'div', content: 'add-new-folder-popup' });
         }
 
+        //prompt to add new file
+        var promptNewFile = function () {
+            uglipop({ class: 'prompt', source: 'div', content: 'add-new-file-popup' });
+        }
+
         $("button[name=new-folder]").click(function () { promptNewFolder(); });
+        $("button[name=new-file]").click(function () { promptNewFile(); });
 
         //Register click event to go to a folder
         $(document).on("dblclick", ".folder", function () {
@@ -93,6 +99,13 @@
         <h5>New Folder</h5>
         Name: <input type="text" id="new-folder-name" required autofocus />
         <button onclick="Folder.addNewFolder();">Add</button>
+        <button onclick="remove();">Cancel</button>
+    </div>
+
+    <div id="add-new-file-popup" style="display:none;">
+        <h5>New File</h5>
+        File: <input type="file" id="new-file-name" required autofocus />
+        <button onclick="File.uploadFile();">Add</button>
         <button onclick="remove();">Cancel</button>
     </div>
 }
