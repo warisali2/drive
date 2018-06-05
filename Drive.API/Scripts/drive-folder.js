@@ -2,6 +2,7 @@
 
 Folder.folders = null;
 Folder.container = $("#folders");
+Folder.breadcrumbsContainer = $("#breadcrumbs");
 
 //Makes ajax request to server and places them in folders variable
 Folder.getFoldersFromServer = function (parentFolderId) {
@@ -40,7 +41,7 @@ Folder.loadFolders = function () {
             if(folder.ParentFolderId != currentFolderId)
                 continue;
 
-            var div = $("<div>").css("border", "2px solid black").css("clear", "both").addClass("folder").attr("folder-id", folder.Id);
+            var div = $("<div>").css("border", "2px solid black").css("clear", "both").addClass("folder").attr("folder-id", folder.Id).attr("folder-name", folder.Name);
 
             var Id = $("<span>").text("Id:" + folder.Id).insertAfter($("<br>"));
             var Name = $("<span>").text("Name:" + folder.Name).insertAfter($("<br>"));
@@ -82,3 +83,14 @@ Folder.addNewFolder = function () {
     Folder.getFoldersFromServer();
     remove();
 };
+
+Folder.updateBreadcrumbs = function () {
+    var container = Folder.breadcrumbsContainer;
+
+    var currentId = currentFolderId;
+
+    while(currentId != -1)
+    {
+        
+    }
+}
