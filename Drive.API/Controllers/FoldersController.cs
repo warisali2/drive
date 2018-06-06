@@ -37,5 +37,28 @@ namespace Drive.API.Controllers
             folder.Save();
         }
 
+        [HttpGet]
+        public void Delete(int id)
+        {
+            FolderDAO dao = new FolderDAO();
+
+            var folder = dao.GetById(id);
+            folder.IsActive = false;
+            folder.Update();
+
+            FileDAO fileDAO = new FileDAO();
+            var allfiles = fileDAO.GetAll();
+
+            var files = (from file in allfiles
+                         where file.ParenFolderId == id
+                         select file).ToList<Entities.File>();
+
+            foreach(var file in files)
+            {
+                file.IsActive = false;
+                file.Update();
+            }
+        }
+
     }
 }

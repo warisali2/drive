@@ -78,4 +78,20 @@ File.loadFiles = function () {
 
 File.getDisplayName = function (name) {
     return name.substring(name.indexOf("-") + 1);
-}
+};
+
+File.deleteFile = function (id) {
+    var settings = {};
+
+    settings.url = "/api/files/delete";
+    settings.data = { id: id };
+    settings.success = function () {
+        File.getFilesFromServer();
+    };
+
+    settings.error = function () {
+        alert("Error could not delete file!");
+    };
+
+    $.ajax(settings);
+};

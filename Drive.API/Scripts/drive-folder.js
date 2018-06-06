@@ -85,13 +85,18 @@ Folder.addNewFolder = function () {
     remove();
 };
 
-Folder.updateBreadcrumbs = function () {
-    var container = Folder.breadcrumbsContainer;
+Folder.deleteFolder = function (id) {
+    var settings = {};
 
-    var currentId = currentFolderId;
+    settings.url = "/api/folders/delete";
+    settings.data = { id: id };
+    settings.success = function () {
+        Folder.getFoldersFromServer();
+    };
 
-    while(currentId != -1)
-    {
-        
-    }
-}
+    settings.error = function () {
+        alert("Error could not delete folder!");
+    };
+
+    $.ajax(settings);
+};

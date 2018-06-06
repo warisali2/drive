@@ -85,5 +85,15 @@ namespace Drive.API.Controllers
 
             return activeAndRootFiles;
         }
+
+        [HttpGet]
+        public void Delete(int id)
+        {
+            FileDAO dao = new FileDAO();
+
+            var file = dao.GetById(id);
+            file.IsActive = false;
+            file.Update();
+        }
     }
 }
