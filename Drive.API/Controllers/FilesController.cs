@@ -1,8 +1,11 @@
 ﻿using Drive.DAL;
 using Drive.DAL.Extensions;
 using Drive.Entities;
+using Microsoft.WindowsAPICodePack.Shell;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,8 +34,7 @@ namespace Drive.API.Controllers
 
                             Entities.File file = new Entities.File();
 
-                            //file.Name = uniqueName + "-" + postedFile.FileName;
-                            file.Name = postedFile.FileName;
+                            file.Name = uniqueName + "-" + Path.GetFileNameWithoutExtension(postedFile.FileName);
                             file.FileExt = Path.GetExtension(postedFile.FileName);
                             file.IsActive = true;
                             file.FileSizeInKB = (postedFile.ContentLength) / 1024;
@@ -41,9 +43,18 @@ namespace Drive.API.Controllers
                             file.ParenFolderId = parentFolderId;
 
                             var rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
-                            var fileSavePath = Path.Combine(rootPath, file.Name);
+                            var fileSavePath = Path.Combine(rootPath, file.Name + file.FileExt);
 
                             postedFile.SaveAs(fileSavePath);
+
+                            ShellFile shellFile = ShellFile.FromFilePath(fileSavePath);
+                            Bitmap shellThumb = shellFile.Thumbnail.ExtraLargeBitmap;
+                            shellThumb.MakeTransparent(Color.Black);
+
+                            var thumbFilePath = Path.Combine(rootPath, file.Name) + "-thumb.png";
+
+                            shellThumb.Save(thumbFilePath, ImageFormat.Png);
+
                             file.Save();
                         }
                     }
@@ -62,6 +73,7 @@ namespace Drive.API.Controllers
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
+        [HttpGet]
         public List<Entities.File> GetAll(int userId, int parentFolderId = -1)
         {
             FileDAO fileDAO = new FileDAO();

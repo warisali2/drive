@@ -65,12 +65,17 @@ File.loadFiles = function () {
 
             var div = $("<div>").css("border", "2px solid black").css("clear", "both").addClass("file").attr("file-id", file.Id).attr("file-name", file.Name);
 
+            var Image = $("<img>").attr("src", "/UploadedFiles/" + file.Name + "-thumb.png").css("height", "50px");
             var Id = $("<span>").text("Id:" + file.Id).insertAfter($("<br>"));
-            var Name = $("<span>").text("Name:" + file.Name).insertAfter($("<br>"));
+            var Name = $("<span>").text("Name:" + File.getDisplayName(file.Name)).insertAfter($("<br>"));
             var CreatedOn = $("<span>").text("UploadedOn:" + file.UploadedOn).insertAfter($("<br>"));
 
-            div.append(Id, Name, CreatedOn);
+            div.append(Image, Id, Name, CreatedOn);
             container.append(div);
         };
     }
 };
+
+File.getDisplayName = function (name) {
+    return name.substring(name.indexOf("-") + 1);
+}
