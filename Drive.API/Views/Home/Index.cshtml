@@ -93,6 +93,7 @@
 
                 var id = $(this).attr("file-id");
                 $("#file-actions .delete").attr("obj-id", id).attr("obj-type", "file");
+                $("#file-actions .download").attr("obj-id", id);
             });
 
             $(document).on("click", ".folder", function (e) {
@@ -115,6 +116,10 @@
                     File.deleteFile($(this).attr("obj-id"));
                 else
                     Folder.deleteFolder($(this).attr("obj-id"));
+            });
+
+            $(document).on("click", ".download", function (e) {
+                File.downloadFile($(this).attr("obj-id"));
             });
         });
 

@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using MimeTypes;
 
 namespace Drive.API.Controllers
 {
@@ -94,6 +95,37 @@ namespace Drive.API.Controllers
             var file = dao.GetById(id);
             file.IsActive = false;
             file.Update();
+        }
+
+        [HttpGet]
+        public Object DownloadFile(int id)
+        {
+            var rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
+
+            var dao = new FileDAO();
+            var file = dao.GetById(id);
+
+            if(file != null)
+            {
+                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.OK);
+                var fileFullPath = Path.Combine(rootPath, file.Name + file.FileExt);
+
+                byte[] fileStream = System.IO.File.ReadAllBytes(fileFullPath);
+                System.IO.MemoryStream ms = new MemoryStream(fileStream);
+
+                resp.Content = new ByteArrayContent(fileStream);
+                resp.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+                var type = MimeTypeMap.GetMimeType(file.FileExt);
+                resp.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(type);
+                resp.Content.Headers.ContentDisposition.FileName = file.Name.Substring(file.Name.IndexOf('-')+1) + file.FileExt;
+                return resp;
+            }
+            else
+            {
+                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound);
+                return resp;
+            }
         }
     }
 }

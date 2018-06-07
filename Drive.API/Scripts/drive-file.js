@@ -95,3 +95,8 @@ File.deleteFile = function (id) {
 
     $.ajax(settings);
 };
+
+File.downloadFile = function (id) {
+    var url = "/api/files/downloadfile?id=" + id;
+    window.open(url);
+};
