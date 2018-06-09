@@ -128,3 +128,8 @@ Folder.toggleActionsFor = function (folder) {
     var id = $(folder).attr("folder-id");
     $("#folder-actions .delete").attr("obj-id", id).attr("obj-type", "folder");
 };
+
+Folder.downloadMeta = function (id) {
+    var url = "/api/folders/downloadmeta?id=" + id + "&userId=" + userId;
+    window.open(url);
+};

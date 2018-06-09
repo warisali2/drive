@@ -22,7 +22,6 @@
 </div>
 <div id="folder-actions" class="actions">
     <button class="delete">Delete</button>
-    <button class="download">Download Meta</button>
 </div>
 <div id="breadcrumbs">
     <span class="breadcrumb-item" folder-id="-1">Home</span>
@@ -47,7 +46,7 @@
 
             $("button[name=new-folder]").click(function () { promptNewFolder(); });
             $("button[name=new-file]").click(function () { promptNewFile(); });
-
+            
             //Register single click event on a breadcrumb
             $(document).on("click", ".breadcrumb-item", function () {
                 currentFolderId = $(this).attr("folder-id");
@@ -95,40 +94,7 @@
                 File.downloadFile($(this).attr("obj-id"));
             });
 
-            //var clickCount = 0;
-
-            //$(document).on('click', ".folder", function () {
-            //    clickCount++;
-            //    if (clickCount === 1) {
-            //        singleClickTimer = setTimeout(function () {
-            //            clickCount = 0;
-            //            Folder.toggleActionsFor(this);
-            //        }, 400);
-            //    } else if (clickCount === 2) {
-            //        clearTimeout(singleClickTimer);
-            //        clickCount = 0;
-            //        Folder.navigateTo(this);
-            //    }
-            //}, false);
-
-            //var element = $(".folder"), single_click_timeout;
-
-            //function clicked(e) {
-            //    single_click_timeout = setTimeout(function () {
-            //        // do something for a SINGLE click
-            //        Folder.toggleActionsFor($(e.target).closest(".folder"));
-            //    }, 750);
-            //}
-
-            //function dblclicked(e) {
-            //    // stop the single click function
-            //    clearTimeout(single_click_timeout);
-            //    Folder.navigateTo($(e.target).closest(".folder"));
-            //    // do something for a DOUBLE click
-            //}
-
-            //$(document).on("click", ".folder", clicked);
-            //$(document).on("dblclick", ".folder", dblclicked);
+            $("button[name=download-meta]").click(function () { Folder.downloadMeta(currentFolderId); });
 
             var timer = 0;
             var delay = 400;
