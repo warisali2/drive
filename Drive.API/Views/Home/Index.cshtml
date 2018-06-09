@@ -48,18 +48,6 @@
             $("button[name=new-folder]").click(function () { promptNewFolder(); });
             $("button[name=new-file]").click(function () { promptNewFile(); });
 
-            //Register click event to go to a folder
-            $(document).on("dblclick", ".folder", function () {
-                currentFolderId = $(this).attr("folder-id");
-                var name = $(this).attr("folder-name");
-
-                var bc = $("#breadcrumbs");
-
-                bc.append($("<span>").text(" > " + name).addClass("breadcrumb-item").attr("folder-id", currentFolderId));
-
-                Folder.getFoldersFromServer();
-            });
-
             //Register single click event on a breadcrumb
             $(document).on("click", ".breadcrumb-item", function () {
                 currentFolderId = $(this).attr("folder-id");
@@ -96,21 +84,6 @@
                 $("#file-actions .download").attr("obj-id", id);
             });
 
-            $(document).on("click", ".folder", function (e) {
-
-                $(".selected").not(this).removeClass("selected");
-
-                $("#file-actions").hide();
-                $("#folder-actions").show();
-                $(this).toggleClass("selected");
-
-                if (!$(this).hasClass("selected"))
-                    $("#folder-actions").hide();
-
-                var id = $(this).attr("folder-id");
-                $("#folder-actions .delete").attr("obj-id", id).attr("obj-type", "folder");
-            });
-
             $(document).on("click", ".delete", function (e) {
                 if ($(this).attr("obj-type") == "file")
                     File.deleteFile($(this).attr("obj-id"));
@@ -121,7 +94,66 @@
             $(document).on("click", ".download", function (e) {
                 File.downloadFile($(this).attr("obj-id"));
             });
+
+            //var clickCount = 0;
+
+            //$(document).on('click', ".folder", function () {
+            //    clickCount++;
+            //    if (clickCount === 1) {
+            //        singleClickTimer = setTimeout(function () {
+            //            clickCount = 0;
+            //            Folder.toggleActionsFor(this);
+            //        }, 400);
+            //    } else if (clickCount === 2) {
+            //        clearTimeout(singleClickTimer);
+            //        clickCount = 0;
+            //        Folder.navigateTo(this);
+            //    }
+            //}, false);
+
+            //var element = $(".folder"), single_click_timeout;
+
+            //function clicked(e) {
+            //    single_click_timeout = setTimeout(function () {
+            //        // do something for a SINGLE click
+            //        Folder.toggleActionsFor($(e.target).closest(".folder"));
+            //    }, 750);
+            //}
+
+            //function dblclicked(e) {
+            //    // stop the single click function
+            //    clearTimeout(single_click_timeout);
+            //    Folder.navigateTo($(e.target).closest(".folder"));
+            //    // do something for a DOUBLE click
+            //}
+
+            //$(document).on("click", ".folder", clicked);
+            //$(document).on("dblclick", ".folder", dblclicked);
+
+            var timer = 0;
+            var delay = 400;
+            var prevent = false;
+
+            $(document).on("click", ".folder", function (e) {
+                  timer = setTimeout(function () {
+                      if (!prevent) {
+                          Folder.toggleActionsFor($(e.target).closest(".folder"));
+                      }
+                      prevent = false;
+                  }, delay);
+            });
+
+            $(document).on("dblclick", ".folder", function (e) {
+                clearTimeout(timer);
+                prevent = true;
+                Folder.navigateTo($(e.target).closest(".folder"));
+            });
+
         });
+
+
+
+
 
         //prompt to add new folder
         var promptNewFolder = function () {

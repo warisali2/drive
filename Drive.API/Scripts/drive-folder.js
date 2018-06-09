@@ -100,3 +100,31 @@ Folder.deleteFolder = function (id) {
 
     $.ajax(settings);
 };
+
+Folder.navigateTo = function (folder) {
+    $("#folder-actions").hide();
+    $("#file-actions").hide();
+
+    currentFolderId = $(folder).attr("folder-id");
+    var name = $(folder).attr("folder-name");
+
+    var bc = $("#breadcrumbs");
+
+    bc.append($("<span>").text(" > " + name).addClass("breadcrumb-item").attr("folder-id", currentFolderId));
+
+    Folder.getFoldersFromServer();
+};
+
+Folder.toggleActionsFor = function (folder) {
+    $(".selected").not(folder).removeClass("selected");
+
+    $("#file-actions").hide();
+    $("#folder-actions").show();
+    $(folder).toggleClass("selected");
+
+    if (!$(folder).hasClass("selected"))
+        $("#folder-actions").hide();
+
+    var id = $(folder).attr("folder-id");
+    $("#folder-actions .delete").attr("obj-id", id).attr("obj-type", "folder");
+};
