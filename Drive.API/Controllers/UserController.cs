@@ -13,6 +13,9 @@ namespace Drive.Controllers
         // GET: User
         public ActionResult Login()
         {
+            if (SessionManager.IsValidUser)
+                return Redirect("~/Home");
+
             return View();
         }
 
