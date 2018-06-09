@@ -187,7 +187,7 @@ namespace Drive.API.Controllers
 
             section.AddParagraph("Name: " + inputFile.Name + inputFile.FileExt);
             section.AddParagraph("Type: FILE");
-            section.AddParagraph("Size: " + inputFile.FileSizeInKB + "KB");
+            section.AddParagraph("Size: " + inputFile.FileSizeInKB + " KB");
             section.AddParagraph("Parent: " + parentFolderName);
             section.AddParagraph();
         }
