@@ -149,11 +149,6 @@ namespace Drive.API.Controllers
             if(currentFolder.Id != -1)
                 InsertMetaOf(currentFolder, folders, ref section);
 
-            foreach (var folder in childFoldersOfCurrentFolder)
-            {
-                InsertMetaOf(folder, folders, ref section);
-            }
-
             foreach (var file in childFilesOfCurrentFolder)
             {
                 InsertMetaOf(file, folders, ref section);
