@@ -1,37 +1,86 @@
-﻿@using Drive.Security;
-
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Home";
 }
 
-<h2>Index</h2>
-
-<style>
-    .selected {
-        background-color: blue;
-    }
-</style>
-
-<h3>Hello @SessionManager.User.Name</h3>
-
-<h4>Folders</h4>
-
-<div id="file-actions" class="actions">
-    <button class="delete">Delete</button>
-    <button class="download">Download</button>
-</div>
-<div id="folder-actions" class="actions">
-    <button class="delete">Delete</button>
-</div>
-<div id="breadcrumbs">
-    <span class="breadcrumb-item" folder-id="-1">Home</span>
+<div class="mdl-grid justify-center">
+    <div class="mdl-cell mdl-cell--middle mdl-cell--9-col">
+        <div id="breadcrumbs">
+            <span class="breadcrumb-item mdl-typography--headline" folder-id="-1">Home</span>
+        </div>
+    </div>
+    <div class="mdl-cell mdl-cell--middle mdl-cell--3-col">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent float-right" name="download-meta">
+            Download Meta
+        </button>
+    </div>
 </div>
 
-<div id="folders"></div>
+<div id="folders" class="mdl-grid"></div>
 
-<h4>Files</h4>
+<div id="files" class="mdl-grid"></div>
 
-<div id="files"></div>
+<button id="create-new-folder" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+    <i class="material-icons">
+        create_new_folder
+    </i>
+</button>
+<button id="insert-new-file" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+    <i class="material-icons">
+        insert_drive_file
+    </i>
+</button>
+
+<dialog class="mdl-dialog" id="create-new-folder-dialog">
+    <h4 class="mdl-dialog__title">New Folder</h4>
+    <div class="mdl-dialog__content">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="new-folder-name">
+            <label class="mdl-textfield__label" for="sample1">Folder Name</label>
+        </div>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button" onclick="Folder.addNewFolder(); global.addNewFolderDialog.close();">Add</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+    </div>
+</dialog>
+
+<dialog class="mdl-dialog" id="insert-new-file-dialog">
+    <h4 class="mdl-dialog__title">Upload File</h4>
+    <div class="mdl-dialog__content">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
+            <input class="mdl-textfield__input" placeholder="File" type="text" id="new-file-name" readonly />
+            <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+                <i class="material-icons">attach_file</i><input type="file" id="new-file">
+            </div>
+        </div>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button" onclick="File.uploadFile(); global.insertNewFileDialog.close();">Upload</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+    </div>
+</dialog>
+
+<dialog class="mdl-dialog" id="delete-file-dialog">
+    <h4 class="mdl-dialog__title">Delete File</h4>
+    <div class="mdl-dialog__content">
+        Are you sure you want to delete <span id="file-name"></span>? 
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button" id="delete-file-button" onclick="File.deleteFile($(this).attr('file-id')); global.deleteFileDialog.close();">Delete</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+    </div>
+</dialog>
+
+<dialog class="mdl-dialog" id="delete-folder-dialog">
+    <h4 class="mdl-dialog__title">Delete Folder</h4>
+    <div class="mdl-dialog__content">
+        Are you sure you want to delete <span id="folder-name"></span>?
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button" id="delete-folder-button" onclick="Folder.deleteFolder($(this).attr('folder-id')); global.deleteFolderDialog.close();">Delete</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+    </div>
+</dialog>
 
 @section scripts {
     @Scripts.Render("~/bundles/uglipop")
@@ -42,14 +91,70 @@
         $(document).ready(function () {
             Folder.getFoldersFromServer();
 
-            $(".actions").hide();
 
-            $("button[name=new-folder]").click(function () { promptNewFolder(); });
-            $("button[name=new-file]").click(function () { promptNewFile(); });
-            
+            //Register dialog to add new folder
+            global.addNewFolderDialog = document.querySelector("#create-new-folder-dialog");
+            global.addNewFolderShowDialogButton = document.querySelector('#create-new-folder');
+            if (!global.addNewFolderDialog.showModal) {
+                dialogPolyfill.registerDialog(global.addNewFolderDialog);
+            }
+            global.addNewFolderShowDialogButton.addEventListener('click', function () {
+                global.addNewFolderDialog.showModal();
+            });
+            global.addNewFolderDialog.querySelector('.close').addEventListener('click', function () {
+                global.addNewFolderDialog.close();
+            });
+
+            //Register dialog to add new file
+            document.getElementById("new-file").onchange = function () {
+                document.getElementById("new-file-name").value = this.files[0].name;
+            };
+
+            global.insertNewFileDialog = document.querySelector("#insert-new-file-dialog");
+            global.insertNewFileShowButton = document.querySelector('#insert-new-file');
+            if (!global.insertNewFileDialog.showModal) {
+                dialogPolyfill.registerDialog(global.insertNewFileDialog);
+            }
+            global.insertNewFileShowButton.addEventListener('click', function () {
+                global.insertNewFileDialog.showModal();
+            });
+            global.insertNewFileDialog.querySelector('.close').addEventListener('click', function () {
+                global.insertNewFileDialog.close();
+            });
+
+            //Register dialog to delete file
+            global.deleteFileDialog = document.querySelector("#delete-file-dialog");
+            global.deleteFileShowButton = $('.show-delete-file-dialog');
+            if (!global.deleteFileDialog.showModal) {
+                dialogPolyfill.registerDialog(global.deleteFileDialog);
+            }
+            $(document).on('click', '.show-delete-file-dialog', function() {
+                $("#file-name").text($(this).attr("file-name"));
+                $("#delete-file-button").attr("file-id", $(this).attr("file-id"));
+                global.deleteFileDialog.showModal();
+            });
+            global.deleteFileDialog.querySelector('.close').addEventListener('click', function () {
+                global.deleteFileDialog.close();
+            });
+
+            //Register dialog to delete folder
+            global.deleteFolderDialog = document.querySelector("#delete-folder-dialog");
+            global.deleteFolderShowButton = $('.show-delete-folder-dialog');
+            if (!global.deleteFolderDialog.showModal) {
+                dialogPolyfill.registerDialog(global.deleteFolderDialog);
+            }
+            $(document).on('click', '.show-delete-folder-dialog', function () {
+                $("#folder-name").text($(this).attr("folder-name"));
+                $("#delete-folder-button").attr("folder-id", $(this).attr("folder-id"));
+                global.deleteFolderDialog.showModal();
+            });
+            global.deleteFolderDialog.querySelector('.close').addEventListener('click', function () {
+                global.deleteFolderDialog.close();
+            });
+
             //Register single click event on a breadcrumb
             $(document).on("click", ".breadcrumb-item", function () {
-                currentFolderId = $(this).attr("folder-id");
+                global.currentFolderId = $(this).attr("folder-id");
 
                 var items = $("#breadcrumbs .breadcrumb-item");
 
@@ -57,95 +162,82 @@
                     var item = $(items[i]);
                     var id = item.attr("folder-id");
 
-                    if (id == currentFolderId)
+                    if (id == global.currentFolderId)
                         break;
 
-                    //$(items).remove($(item));
                     $(item).remove();
                 }
 
                 Folder.getFoldersFromServer();
             });
 
-            //Register event for delete button
-            $(document).on("click", ".file", function (e) {
-                $(".selected").not(this).removeClass("selected");
 
-                $("#folder-actions").hide();
-                $("#file-actions").show();
-                $(this).toggleClass("selected");
-
-                if (!$(this).hasClass("selected"))
-                    $("#file-actions").hide();
-
-                var id = $(this).attr("file-id");
-                $("#file-actions .delete").attr("obj-id", id).attr("obj-type", "file");
-                $("#file-actions .download").attr("obj-id", id);
+            $(document).on("click", ".download-file", function (e) {
+                File.downloadFile($(this).attr("file-id"));
             });
 
-            $(document).on("click", ".delete", function (e) {
-                if ($(this).attr("obj-type") == "file")
-                    File.deleteFile($(this).attr("obj-id"));
-                else
-                    Folder.deleteFolder($(this).attr("obj-id"));
-            });
-
-            $(document).on("click", ".download", function (e) {
-                File.downloadFile($(this).attr("obj-id"));
-            });
-
-            $("button[name=download-meta]").click(function () { Folder.downloadMeta(currentFolderId); });
-
-            var timer = 0;
-            var delay = 400;
-            var prevent = false;
-
-            $(document).on("click", ".folder", function (e) {
-                  timer = setTimeout(function () {
-                      if (!prevent) {
-                          Folder.toggleActionsFor($(e.target).closest(".folder"));
-                      }
-                      prevent = false;
-                  }, delay);
-            });
+            $("button[name=download-meta]").click(function () { Folder.downloadMeta(global.currentFolderId); });
 
             $(document).on("dblclick", ".folder", function (e) {
-                clearTimeout(timer);
-                prevent = true;
                 Folder.navigateTo($(e.target).closest(".folder"));
             });
 
         });
-
-
-
-
-
-        //prompt to add new folder
-        var promptNewFolder = function () {
-            uglipop({ class: 'prompt', source: 'div', content: 'add-new-folder-popup' });
-        }
-
-        //prompt to add new file
-        var promptNewFile = function () {
-            uglipop({ class: 'prompt', source: 'div', content: 'add-new-file-popup' });
-        }
-
-
     </script>
 
-    <div id="add-new-folder-popup" style="display:none;">
-        <h5>New Folder</h5>
-        Name: <input type="text" id="new-folder-name" required autofocus />
-        <button onclick="Folder.addNewFolder();">Add</button>
-        <button onclick="remove();">Cancel</button>
-    </div>
 
-    <div id="add-new-file-popup" style="display:none;">
-        <h5>New File</h5>
-        File: <input type="file" id="new-file-name" required autofocus />
-        <button onclick="File.uploadFile();">Add</button>
-        <button onclick="remove();">Cancel</button>
-    </div>
+    <script id="folder-card" type="text/x-handlebars-template">
+        <div class="mdl-grid mdl-grid--no-spacing mdl-cell mdl-cell--middle mdl-shadow--2dp mdl-folder-grid">
+            <div class="mdl-cell mdl-cell--2-col">
+                <div class="mdl-card__media">
+                    <i class="material-icons">folder</i>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--10-col">
+                <div class="folder mdl-folder-card mdl-card" folder-id="{{Id}}" folder-name="{{Name}}">
+                    <div class="mdl-card__title">
+                        <div class="mdl-typography--headline">{{Name}}</div>
+                    </div>
+                    <div class="mdl-card__supporting-text mdl-grid justify-center">
+                        <div class="mdl-cell mdl-cell--5-col mdl-cell--middle">
+                            {{CreatedOn}}
+                        </div>
+                        <div class="mdl-cell mdl-cell--7-col mdl-cell--middle">
+                            <button class="mdl-button mdl-js-button mdl-button--icon show-delete-folder-dialog" folder-name="{{Name}}" folder-id="{{Id}}">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="file-card" type="text/x-handlebars-template">
+        <div class="mdl-cell mdl-cell--middle">
+            <div class="mdl-file-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">{{fileName}}</h2>
+                </div>
+                <div class="mdl-card__media">
+                    <img src="/UploadedFiles/{{Name}}-thumb.png">
+                </div>
+                <div class="mdl-card__supporting-text">
+                    Uploaded On: {{UploadedOn}}
+                </div>
+                <div class="mdl-card__actions">
+                    <button class="mdl-button mdl-js-button float-right mdl-button--icon show-delete-file-dialog" file-id="{{Id}}" file-name="{{fileName}}">
+                        <i class="material-icons">delete</i>
+                    </button>
+                    <button class="mdl-button mdl-js-button float-right mdl-button--icon download-file" file-id="{{Id}}">
+                        <i class="material-icons">get_app</i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </script>
 }
+
+
 

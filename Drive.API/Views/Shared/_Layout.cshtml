@@ -4,12 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Drive</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
     @if (Drive.Security.SessionManager.IsValidUser)
     {
         <script>
+            var global = this;
             var userId = @Drive.Security.SessionManager.User.Id;
             var currentFolderId = -1;
         </script>
@@ -17,45 +20,43 @@
 
 </head>
 <body>
-    <h1>Drive</h1>
-    @if (Drive.Security.SessionManager.IsValidUser)
-    {
-        <button name="new-folder">New Folder</button>
-        <button name="new-file">New File</button>
-        <button name="download-meta">Download Meta as PDF</button>
-        @Html.ActionLink("Logout", "Logout", "User")
-    }
-
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <div class="mdl-layout @(!Drive.Security.SessionManager.IsValidUser ? "mdl-layout-for-login" : "") mdl-js-layout mdl-layout--no-desktop-drawer-button">
+        @if (Drive.Security.SessionManager.IsValidUser)
+        {
+            <header class="mdl-layout__header">
+                <div class="mdl-layout-icon"></div>
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout__title">Drive</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation">
+                        <button id="menu1" class="mdl-button mdl-js-button">
+                            <i class="material-icons">perm_identity</i> @Drive.Security.SessionManager.User.Name
+                        </button>
+                    </nav>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
-                </div>
+            </header>
+            <ul class="mdl-menu mdl-js-menu" for="menu1">
+                <li class="mdl-menu__item">@Html.ActionLink("Logout", "Logout", "User", new { area = "" }, new { @class = "mdl-navigation__link", @style= "display:inline-block;width:100%;height:100%;"})</li>
+            </ul>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout__title">Drive</span>
+                <nav class="mdl-navigation">
+                    @Html.ActionLink("Logout", "Logout", "User", new { area = "" }, new { @class = "mdl-navigation__link" })
+                </nav>
             </div>
-        </div>*@
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Drive</p>
-        </footer>
+        }
+
+        <main class="mdl-layout__content @(!Drive.Security.SessionManager.IsValidUser ? "mdl-layout-for-login__content" : "")">
+            @RenderBody()
+        </main>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/drive")
-    @* @Scripts.Render("~/bundles/bootstrap")*@
+    @Scripts.Render("~/bundles/material")
+    @Scripts.Render("~/bundles/handlebars")
+    @Scripts.Render("~/bundles/dialog-polyfill")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

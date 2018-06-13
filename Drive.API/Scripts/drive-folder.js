@@ -6,7 +6,7 @@ Folder.breadcrumbsContainer = $("#breadcrumbs");
 
 //Makes ajax request to server and places them in folders variable
 Folder.getFoldersFromServer = function (parentFolderId) {
-    parentFolderId = currentFolderId;
+    parentFolderId = global.currentFolderId;
     var settings = {};
 
     settings.url = "/api/folders/getall/";
@@ -39,16 +39,15 @@ Folder.loadFolders = function () {
         for(var i = 0; i < Folder.folders.length; i++){
             var folder = Folder.folders[i];
 
-            if(folder.ParentFolderId != currentFolderId)
+            if(folder.ParentFolderId != global.currentFolderId)
                 continue;
 
-            var div = $("<div>").css("border", "2px solid black").css("clear", "both").addClass("folder").attr("folder-id", folder.Id).attr("folder-name", folder.Name);
+            var template = $("#folder-card").html();
+            var templateScript = Handlebars.compile(template);
 
-            var Id = $("<span>").text("Id:" + folder.Id).insertAfter($("<br>"));
-            var Name = $("<span>").text("Name:" + folder.Name).insertAfter($("<br>"));
-            var CreatedOn = $("<span>").text("CreatedOn:" + folder.CreatedOn).insertAfter($("<br>"));
+            folder.CreatedOn = folder.CreatedOn.substring(0, 10);
+            var div = templateScript(folder);
 
-            div.append(Id, Name, CreatedOn);
             container.append(div);
         };
     }
@@ -76,13 +75,12 @@ Folder.saveFolder = function (name, parentFolderId) {
 }
 
 Folder.addNewFolder = function () {
-    var name = $(".prompt input[id=new-folder-name]").val();
+    var name = $("input[id=new-folder-name]").val();
 
     if (name == null || name == "") return false;
 
-    Folder.saveFolder(name, currentFolderId);
+    Folder.saveFolder(name, global.currentFolderId);
     Folder.getFoldersFromServer();
-    remove();
 };
 
 Folder.deleteFolder = function (id) {
@@ -105,12 +103,12 @@ Folder.navigateTo = function (folder) {
     $("#folder-actions").hide();
     $("#file-actions").hide();
 
-    currentFolderId = $(folder).attr("folder-id");
+    global.currentFolderId = $(folder).attr("folder-id");
     var name = $(folder).attr("folder-name");
 
     var bc = $("#breadcrumbs");
 
-    bc.append($("<span>").text(" > " + name).addClass("breadcrumb-item").attr("folder-id", currentFolderId));
+    bc.append($("<span>").text(" > " + name).addClass("breadcrumb-item mdl-typography--headline").attr("folder-id", global.currentFolderId));
 
     Folder.getFoldersFromServer();
 };

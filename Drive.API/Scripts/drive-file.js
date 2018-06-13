@@ -1,6 +1,6 @@
 ﻿var File = {};
 
-File.input = ".prompt #new-file-name";
+File.input = "#new-file";
 File.files = null;
 File.container = $("#files");
 
@@ -14,7 +14,7 @@ File.uploadFile = function () {
 
     var settings = {};
 
-    settings.url = "api/files/uploadfile" + "?userId=" + userId + "&parentFolderId=" + currentFolderId;
+    settings.url = "api/files/uploadfile" + "?userId=" + userId + "&parentFolderId=" + global.currentFolderId;
     settings.contentType = false;
     settings.processData = false;
     settings.type = "POST";
@@ -28,7 +28,7 @@ File.uploadFile = function () {
 
 //Makes ajax request to server and places them in folders variable
 File.getFilesFromServer = function (parentFolderId) {
-    parentFolderId = currentFolderId;
+    parentFolderId = global.currentFolderId;
 
     var settings = {};
 
@@ -60,17 +60,16 @@ File.loadFiles = function () {
         for (var i = 0; i < File.files.length; i++) {
             var file = File.files[i];
 
-            if (file.ParenFolderId != currentFolderId)
+            if (file.ParenFolderId != global.currentFolderId)
                 continue;
 
-            var div = $("<div>").css("border", "2px solid black").css("clear", "both").addClass("file").attr("file-id", file.Id).attr("file-name", file.Name);
+            var template = $("#file-card").html();
+            var templateScript = Handlebars.compile(template);
 
-            var Image = $("<img>").attr("src", "/UploadedFiles/" + file.Name + "-thumb.png").css("height", "50px");
-            var Id = $("<span>").text("Id:" + file.Id).insertAfter($("<br>"));
-            var Name = $("<span>").text("Name:" + File.getDisplayName(file.Name)).insertAfter($("<br>"));
-            var CreatedOn = $("<span>").text("UploadedOn:" + file.UploadedOn).insertAfter($("<br>"));
+            file.UploadedOn = file.UploadedOn.substring(0, 10);
+            file.fileName = file.Name.substring(5) + file.FileExt;
+            var div = templateScript(file);
 
-            div.append(Image, Id, Name, CreatedOn);
             container.append(div);
         };
     }

@@ -8,6 +8,14 @@ namespace Drive
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/dialog-polyfill").Include(
+                    "~/Scripts/dialog-polyfill.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/handlebars").Include(
+                    "~/Scripts/handlebars-v4.0.11.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/material").Include(
+                    "~/Scripts/material.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/drive").Include(
                         "~/Scripts/drive-*"));
 
@@ -30,7 +38,8 @@ namespace Drive
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/material.min.css",
+                      "~/Content/dialog-polyfill.css",
                       "~/Content/site.css"));
         }
     }
